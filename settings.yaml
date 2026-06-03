@@ -1,0 +1,44 @@
+models:
+  chat_model:
+    model_name: gpt-4o
+    temperature: 0.0
+  embedding_model:
+    model_name: jinaai/jina-embeddings-v2-base-en
+    max_seq_length: 512
+    encode_batch_size: 8
+  reranker_model:
+    model_name: BAAI/bge-reranker-base
+    device: cuda
+
+chroma_db:
+  db_path: ./chroma_db
+  collection_name: apt_reports
+
+storage_config:
+  chunk_size: 300
+  overlap: 50
+  store_batch_size: 10
+
+query_config:
+  top_k: 5
+  certainly: 0.6
+  rerank:
+    enabled: true
+    pool_top_k: 30
+    rerank_top_k: 5
+    batch_size: 8
+  hyde:
+    enabled: true
+    rrf_k: 60
+    original_weight: 1.0
+    hyde_weight: 1.0
+    generation_max_tokens: 400
+    prompt_template: |
+      You are generating a hypothetical document for retrieval augmentation.
+      Write a concise factual passage that could answer the user's question.
+      Mention likely entities, malware families, techniques, infrastructure, timelines, and relationships when relevant.
+      Do not say the passage is hypothetical.
+
+      User question:
+      {question}
+
