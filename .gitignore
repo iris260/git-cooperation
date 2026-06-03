@@ -9,3 +9,5 @@
 node_modules
 .target
 .pytest_cache
+
+.venv
